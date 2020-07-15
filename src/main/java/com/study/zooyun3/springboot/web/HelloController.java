@@ -20,6 +20,6 @@ public class HelloController {
 
     @GetMapping("/api/hello")
     public String newHello() {
-        return "hello";
+        return "App.vue";
     }
 }
