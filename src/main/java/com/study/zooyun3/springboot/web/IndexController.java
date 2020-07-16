@@ -32,4 +32,9 @@ public class IndexController {
 
         return "posts-update";
     }
+
+    @GetMapping("/api/hello")
+    public String newHello() {
+        return "Vue";
+    }
 }
