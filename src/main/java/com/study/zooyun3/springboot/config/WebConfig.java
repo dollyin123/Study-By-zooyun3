@@ -1,4 +1,4 @@
-package com.study.zooyun3.springboot.config.auth.config;
+package com.study.zooyun3.springboot.config;
 
 import com.study.zooyun3.springboot.config.auth.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
