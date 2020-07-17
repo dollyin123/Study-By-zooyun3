@@ -5,3 +5,4 @@
 build
 src/main/resources/application-oauth.properties
 src/main/resources/static
+src/frontend/npm-v6.14.4
