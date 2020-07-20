@@ -17,7 +17,7 @@
                         <textarea class="form-control" id="content" placeholder="내용을 입력하세요"></textarea>
                     </div>
                 </form>
-                <a href="/" role="button" class="btn btn-secondary">취소</a>&nbsp;
+                <router-link to="/posts/board" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
                 <button type="button" class="btn btn-primary" id="btn-save">등록</button>
             </div>
         </div>

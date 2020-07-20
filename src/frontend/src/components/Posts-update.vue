@@ -21,7 +21,7 @@
                         <textarea class="form-control" id="content" v-model="postDTO.content"></textarea>
                     </div>
                 </form>
-                <a href="/" role="button" class="btn btn-secondary">취소</a>&nbsp;
+                <router-link to="/posts/board" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
                 <button type="button" class="btn btn-primary" id="btn-update">수정 완료</button>&nbsp;
                 <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
             </div>
