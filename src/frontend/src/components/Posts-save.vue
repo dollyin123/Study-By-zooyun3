@@ -42,7 +42,7 @@
                     "content": this.content
                 }).then(() => {
                     alert('글이 등록되었습니다')
-                    
+                    this.$router.push('/posts/board')
                 }).catch((ex) => {
                     alert("API Error : " + ex)
                 })

@@ -64,7 +64,7 @@
                     "content": this.content,
                 }).then(() => {
                     alert('글이 수정되었습니다')
-
+                    this.$router.push('/posts/board')
                 }).catch((ex) => {
                     alert("API Error : " + ex)
                 })
@@ -72,7 +72,7 @@
             deleteText() {
                 this.$http.delete('/api/v1/posts/' + this.id).then(() => {
                     alert('글이 삭제되었습니다')
-
+                    this.$router.push('/posts/board')
                 }).catch((ex) => {
                     alert("API Error : " + ex)
                 })
