@@ -5,37 +5,41 @@
             <div class="col-md-4">
                 <form>
                     <div class="form-group">
-                        <label for="id">글 번호</label>
-                        <input type="text" class="form-control" id="id" v-bind:value="postDTO.id" readonly>
+                        <label>글 번호</label>
+                        <input type="text" class="form-control" v-bind:value="postDTO.id" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="title">제목</label>
-                        <input type="text" class="form-control" id="title" v-bind:value="postDTO.title">
+                        <label>제목</label>
+                        <input type="text" class="form-control" v-model="title" v-bind:value="postDTO.title">
                     </div>
                     <div class="form-group">
-                        <label for="author"> 작성자 </label>
-                        <input type="text" class="form-control" id="author" v-bind:value="postDTO.author" readonly>
+                        <label> 작성자 </label>
+                        <input type="text" class="form-control" v-bind:value="postDTO.author" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="content"> 내용 </label>
-                        <textarea class="form-control" id="content" v-model="postDTO.content"></textarea>
+                        <label> 내용 </label>
+                        <textarea class="form-control" v-model="content" v-bind:value="postDTO.content"></textarea>
                     </div>
                 </form>
                 <router-link to="/posts/board" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
-                <button type="button" class="btn btn-primary" id="btn-update">수정 완료</button>&nbsp;
-                <button type="button" class="btn btn-danger" id="btn-delete">삭제</button>
+                <button type="button" class="btn btn-primary" v-on:click="updateText">수정 완료</button>&nbsp;
+                <button type="button" class="btn btn-danger" v-on:click="deleteText">삭제</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import router from "../router";
+
     export default {
         name: "Posts-update",
         data() {
             return {
                 postDTO: [],
                 id: this.$route.params.id,
+                title: "",
+                content: "",
             }
         },
         created() {
@@ -46,13 +50,34 @@
         },
         methods: {
             getData() {
-                this.$http.get('/json/'+this.id+'/post.json').then((response) => {
+                this.$http.get('/json/' + this.id + '/post.json').then((response) => {
                     this.postDTO = response.data
+                    this.title = this.postDTO.title
+                    this.content = this.postDTO.content
                 }).catch((ex) => {
-                    console.log("List API Error : " + ex)
+                    alert("API Error : " + ex)
+                })
+            },
+            updateText() {
+                this.$http.put('/api/v1/posts/' + this.id, {
+                    "title": this.title,
+                    "content": this.content,
+                }).then(() => {
+                    alert('글이 수정되었습니다')
+
+                }).catch((ex) => {
+                    alert("API Error : " + ex)
+                })
+            },
+            deleteText() {
+                this.$http.delete('/api/v1/posts/' + this.id).then(() => {
+                    alert('글이 삭제되었습니다')
+
+                }).catch((ex) => {
+                    alert("API Error : " + ex)
                 })
             }
-        },
+        }
     }
 </script>
 

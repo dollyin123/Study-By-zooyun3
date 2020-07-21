@@ -4,7 +4,7 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
-                    <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>&nbsp;
+                    <router-link to="/posts/save" role="button" class="btn btn-primary">글 등록</router-link>&nbsp;
                 </div>
             </div>
             <br>
@@ -20,7 +20,7 @@
                 <tbody id="tbody">
                 <tr v-for="post in posts" v-bind:key="post.id">
                     <td>{{post.id}}</td>
-                    <td><a v-bind:href="url+post.id">{{post.title}}</a></td>
+                    <td><router-link v-bind:to="url+post.id">{{post.title}}</router-link></td>
                     <td>{{post.author}}</td>
                     <td>{{post.modifiedDate}}</td>
                 </tr>
@@ -50,7 +50,7 @@
                 this.$http.get('/json/posts.json').then((response) => {
                     this.posts = response.data
                 }).catch((ex) => {
-                    console.log("List API Error : " + ex)
+                    alert("API Error : " + ex)
                 })
             }
         },

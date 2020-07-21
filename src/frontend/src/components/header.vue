@@ -17,19 +17,16 @@
 
             <b-navbar-brand to="/">Home</b-navbar-brand>
 
-            <b-collapse is-nav>
-                <b-navbar-nav class="ml-auto">
-                        <span v-if="getName">Logged in as:
-                            <span id="user">{{MyName}}</span>&nbsp;
-                            <b-button href="/logout" size="sm" class="mr-sm-0">Logout</b-button>
-                        </span>&nbsp;
-                    <span v-if="!getName">
-                    <b-button href="/oauth2/authorization/google" variant="primary">Google Login</b-button>
-                        &nbsp;
+            <b-navbar-nav class="ml-auto">
+                <span v-if="getName">Logged in as:
+                    <span id="user">{{MyName}}</span>&nbsp;
+                    <b-button href="/logout" size="sm" class="mr-sm-0">Logout</b-button>
+                </span>&nbsp;
+                <span v-if="!getName">
+                    <b-button href="/oauth2/authorization/google" variant="primary">Google Login</b-button>&nbsp;
                     <b-button href="/oauth2/authorization/naver" variant="success">Naver Login</b-button>
                     </span>
-                </b-navbar-nav>
-            </b-collapse>
+            </b-navbar-nav>
         </b-navbar>
     </div>
 </template>
@@ -46,6 +43,9 @@
         created() {
             this.getData()
         },
+        watch: {
+            '$route': 'getData'
+        },
         methods: {
             getData() {
                 this.$http.get('/json/MyName.json').then((response) => {
@@ -54,7 +54,7 @@
                         this.getName = true
                     }
                 }).catch((ex) => {
-                    console.log("List API Error : " + ex)
+                    alert("API Error : " + ex)
                 })
             }
         },
