@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        name: "header",
+        name: "Header",
         data() {
             return {
                 MyName: null,
