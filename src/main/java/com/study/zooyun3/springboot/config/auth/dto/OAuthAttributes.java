@@ -60,7 +60,7 @@ public class OAuthAttributes {
                 .name(name)
                 .email(email)
                 .picture(picture)
-                .role(Role.GUEST)
+                .role(Role.USER) // TODO 게스트로 바꿀 곳
                 .build();
     }
 }

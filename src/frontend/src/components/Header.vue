@@ -25,7 +25,7 @@
                 <span v-if="!getName">
                     <b-button href="/oauth2/authorization/google" variant="primary">Google Login</b-button>&nbsp;
                     <b-button href="/oauth2/authorization/naver" variant="success">Naver Login</b-button>
-                    </span>
+                </span>
             </b-navbar-nav>
         </b-navbar>
     </div>

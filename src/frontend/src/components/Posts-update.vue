@@ -43,9 +43,6 @@
         created() {
             this.getData()
         },
-        watch: {
-            '$route': 'getData'
-        },
         methods: {
             getData() {
                 this.$http.get('/json/' + this.id + '/post.json').then((response) => {
