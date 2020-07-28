@@ -1,9 +1,9 @@
 package com.study.zooyun3.springboot.web;
 
 import com.study.zooyun3.springboot.service.posts.PostsService;
-import com.study.zooyun3.springboot.web.dto.PostsResponseDto;
-import com.study.zooyun3.springboot.web.dto.PostsSaveRequestDto;
-import com.study.zooyun3.springboot.web.dto.PostsUpdateRequestDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsResponseDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsSaveRequestDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

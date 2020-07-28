@@ -1,4 +1,4 @@
-package com.study.zooyun3.springboot.web.dto;
+package com.study.zooyun3.springboot.web.dto.posts;
 
 import com.study.zooyun3.springboot.domain.posts.Posts;
 import lombok.Getter;

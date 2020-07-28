@@ -2,10 +2,10 @@ package com.study.zooyun3.springboot.service.posts;
 
 import com.study.zooyun3.springboot.domain.posts.Posts;
 import com.study.zooyun3.springboot.domain.posts.PostsRepository;
-import com.study.zooyun3.springboot.web.dto.PostsListResponseDto;
-import com.study.zooyun3.springboot.web.dto.PostsResponseDto;
-import com.study.zooyun3.springboot.web.dto.PostsSaveRequestDto;
-import com.study.zooyun3.springboot.web.dto.PostsUpdateRequestDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsListResponseDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsResponseDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsSaveRequestDto;
+import com.study.zooyun3.springboot.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
