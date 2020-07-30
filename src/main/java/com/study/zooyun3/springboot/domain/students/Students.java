@@ -17,7 +17,7 @@ public class Students {
     private Long id;
 
     @Column
-    private String universe;
+    private String university;
 
     @Column
     private String major;
@@ -50,9 +50,9 @@ public class Students {
     private String picture;
 
     @Builder
-    public Students(String universe, String major, String stNumber, Integer grade, String name, String sex,
+    public Students(String university, String major, String stNumber, Integer grade, String name, String sex,
                     String phoneNumber, String address, Date birthday, Date entranceYear, String picture) {
-        this.universe = universe;
+        this.university = university;
         this.major = major;
         this.stNumber = stNumber;
         this.grade = grade;

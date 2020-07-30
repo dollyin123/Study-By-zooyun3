@@ -10,7 +10,7 @@ import java.sql.Date;
 @Getter
 @NoArgsConstructor
 public class StudentSaveRequestDto {
-    private String universe;
+    private String university;
     private String major;
     private String stNumber;
     private Integer grade;
@@ -23,9 +23,9 @@ public class StudentSaveRequestDto {
     private String picture;
 
     @Builder
-    public StudentSaveRequestDto(String universe, String major, String stNumber, Integer grade, String name, String sex,
+    public StudentSaveRequestDto(String university, String major, String stNumber, Integer grade, String name, String sex,
                                  String phoneNumber, String address, Date birthday, Date entranceYear, String picture) {
-        this.universe = universe;
+        this.university = university;
         this.major = major;
         this.stNumber = stNumber;
         this.grade = grade;
@@ -40,7 +40,7 @@ public class StudentSaveRequestDto {
 
     public Students toEntity() {
         return Students.builder()
-                .universe(universe)
+                .university(university)
                 .major(major)
                 .stNumber(stNumber)
                 .grade(grade)

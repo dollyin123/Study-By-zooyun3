@@ -15,7 +15,7 @@ export default new VueRouter({
         { path: '/', component: Home },
         { path: '/posts/save', component: Posts_save },
         { path: '/posts/update/:id', component: Posts_update },
-        { path: '/posts/board', component: Board },
+        { path: '/posts', component: Board },
         { path: '/student', component: StudentManager },
         { path: '/student/new', component: NewStudent },
     ]

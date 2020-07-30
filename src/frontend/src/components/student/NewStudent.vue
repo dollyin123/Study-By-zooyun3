@@ -2,51 +2,46 @@
   <div>
     <h1>학생정보 신규입력</h1>
     <div class="col-md-12">
-      <div class="col-md-4">
-        <form>
-          <div class="form-group">
-            <label>소속 대학</label>
-            <input type="text" class="form-control" v-model="universe" placeholder="소속 대학을 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label>학과</label>
-            <input type="text" class="form-control" v-model="major" placeholder="학과를 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label>학기</label>
-            <input type="text" class="form-control" v-model="grade" placeholder="학기를 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label>이름</label>
-            <input type="text" class="form-control" v-model="name" placeholder="이름을 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label>성별</label>
-            <input type="text" class="form-control" v-model="sex" placeholder="성별을 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label></label>
-            <input type="text" class="form-control" v-model="phoneNumber" placeholder="휴대전화 번호를 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label></label>
-            <input type="text" class="form-control" v-model="address" placeholder="주소를 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label></label>
-            <input type="text" class="form-control" v-model="birthday" placeholder="생일을 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label></label>
-            <input type="text" class="form-control" v-model="entranceYear" placeholder="입학년도를 입력해 주세요">
-          </div>
-          <div class="form-group">
-            <label></label>
-            <input type="text" class="form-control" v-model="picture" placeholder="사진 주소를 입력해 주세요">
-          </div>
-        </form>
-        <router-link to="/posts/board" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
-        <button type="button" class="btn btn-primary" v-on:click="NewStudent">등록</button>
+      <div class="col-md-5">
+        <b-form @submit="onSubmit">
+          <!-- TODO 대학 학과 DB처리 -->
+          <label class="mr-sm-2">소속 대학 : </label>
+          <b-form-select v-model="university" :options="universityList" v-on:select="selectUNIV"></b-form-select>
+          <label class="mr-sm-2">소속 학과 : </label>
+          <b-form-select v-model="major" :options="majorList"></b-form-select>
+          <label class="mr-sm-2">학기 : </label>
+          <b-form-select v-model="grade" :options="grades"></b-form-select>
+          <label class="mr-sm-2">이름 : </label>
+          <b-form-input v-model="name" placeholder="ex) 홍길동" required></b-form-input>
+          <label class="mr-sm-2">성별 : </label>
+          <b-form-radio-group v-model="selectSex">
+            <b-form-radio value="남">남</b-form-radio>
+            <b-form-radio value="여">여</b-form-radio>
+          </b-form-radio-group>
+          <label class="mr-sm-2">전화번호 : </label>
+          <b-form-input v-model="firstNum" readonly></b-form-input>
+          <span>-</span>
+          <b-form-input v-model="secondNum" required></b-form-input>
+          <span>-</span>
+          <b-form-input v-model="lastNum" required></b-form-input>
+          <!-- TODO 주소 외부 프로그램 가져와보기 -->
+          <label class="mr-sm-2">주소 : </label>
+          <b-form-input v-model="address" required></b-form-input>
+          <label class="mr-sm-2">생년월일 : </label>
+          <b-form-datepicker v-model="birthday"></b-form-datepicker>
+          <label class="mr-sm-2">입학년도 : </label>
+          <b-form-datepicker v-model="entranceYear"></b-form-datepicker>
+          <label class="mr-sm-2">증명사진 : </label>
+          <b-form-file v-model="file"
+                       :state="Boolean(file)"
+                       placeholder="Choose a file or drop it here..."
+                       drop-placeholder="Drop file here..."
+                       required
+          ></b-form-file>
+          <br>
+          <router-link to="/posts" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
+          <b-button type="submit" variant="primary">등록</b-button>
+        </b-form>
       </div>
     </div>
   </div>
@@ -57,10 +52,10 @@ export default {
   name: "NewStudent",
   data() {
     return {
-      universe: "",
+      university: "",
       major: "",
       stNumber: "",
-      grade: "",
+      grade: 1,
       name: "",
       sex: "",
       phoneNumber: "",
@@ -68,18 +63,36 @@ export default {
       birthday: "",
       entranceYear: "",
       picture: "",
+
+      universityList: [],
+      majorList: [],
+      grades: [
+        {value: 1, text: '1'},
+        {value: 2, text: '2'},
+        {value: 3, text: '3'},
+        {value: 4, text: '4'},
+        {value: 5, text: '5'},
+        {value: 6, text: '6'},
+        {value: 7, text: '7'},
+        {value: 8, text: '8'},
+      ],
+      selectSex: '남',
+      firstNum: "010",
+      secondNum: "",
+      lastNum: "",
     }
   },
   methods: {
-    NewStudent() {
+    onSubmit(evt) {
+      evt.preventDefault()
       this.$http.post('/api/v1/students', {
-        "universe": this.universe,
+        "university": this.university,
         "major": this.major,
         "stNumber": "1", //TODO
         "grade": this.grade,
         "name": this.name,
         "sex": this.sex,
-        "phoneNumber": this.phoneNumber,
+        "phoneNumber": this.firstNum + "-" + this.secondNum + "-" + this.lastNum,
         "address": this.address,
         "birthday": this.birthday,
         "entranceYear": this.entranceYear,
@@ -90,6 +103,9 @@ export default {
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
+    },
+    selectUNIV() {
+
     }
   }
 }
