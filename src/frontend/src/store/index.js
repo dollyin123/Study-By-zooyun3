@@ -21,8 +21,7 @@ const store = new Vuex.Store({
     mutations: {
         pushCourseToCart(state, CourseId) {
             state.cart.push({
-                id: CourseId,
-                quantity: 1
+                id: CourseId
             });
         },
     }
