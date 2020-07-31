@@ -40,7 +40,7 @@ public class VueJsonController {
         return postsService.findAllDesc();
     }
 
-    @GetMapping("/json/additional.json")
+    @GetMapping("/json/newId.json")
     public @ResponseBody String idByStNumber() {
         return studentService.idByStNumber();
     }

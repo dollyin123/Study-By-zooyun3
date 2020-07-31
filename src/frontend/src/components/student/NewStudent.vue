@@ -109,7 +109,7 @@ export default {
         "entranceYear": this.entranceYear,
         "picture": this.picture,
       }).then(() => {
-        this.$http.get('/json/additional.json').then((response) => {
+        this.$http.get('/json/newId.json').then((response) => {
           switch (response.data.toString().length) {
             case 1: this.zero = "000"; break
             case 2: this.zero = "00"; break
