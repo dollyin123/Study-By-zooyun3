@@ -19,7 +19,7 @@
           <b-form-input class="topStyle" v-model="name" placeholder="ex) 홍길동" required></b-form-input>
           <br><br>
           <label class="mr-sm-2">성별 : </label>
-          <b-form-radio-group class="topStyle" v-model="selectSex">
+          <b-form-radio-group class="topStyle" v-model="sex">
             <b-form-radio value="남">남</b-form-radio>
             <b-form-radio value="여">여</b-form-radio>
           </b-form-radio-group>
@@ -41,8 +41,9 @@
           <br>
           <label class="mr-sm-2">증명사진 : </label>
           <b-form-file class="bottomStyle"
-                       v-model="file"
-                       :state="Boolean(file)"
+                       v-model="picture"
+                       :state="Boolean(picture)"
+                       accept=".png"
                        placeholder="Choose a file or drop it here..."
                        drop-placeholder="Drop file here..."
                        required
@@ -66,7 +67,7 @@ export default {
       stNumber: null,
       grade: 1,
       name: null,
-      sex: null,
+      sex: '남',
       phoneNumber: null,
       address: null,
       birthday: null,
@@ -85,28 +86,40 @@ export default {
         {value: 7, text: '7'},
         {value: 8, text: '8'},
       ],
-      selectSex: '남',
       firstNum: "010",
       secondNum: "",
       lastNum: "",
+
+      zero: "",
     }
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault()
       this.$http.post('/api/v1/students', {
-        "university": this.university,
-        "major": this.major,
-        "stNumber": "1", //TODO
+        "university": null,
+        "major": null,
+        "stNumber": "0",
         "grade": this.grade,
         "name": this.name,
         "sex": this.sex,
         "phoneNumber": this.firstNum + "-" + this.secondNum + "-" + this.lastNum,
-        "address": this.address,
+        "address": this.address, // TODO
         "birthday": this.birthday,
         "entranceYear": this.entranceYear,
         "picture": this.picture,
       }).then(() => {
+        this.$http.get('/json/additional.json').then((response) => {
+          switch (response.data.toString().length) {
+            case 1: this.zero = "000"; break
+            case 2: this.zero = "00"; break
+            case 3: this.zero = "0"; break
+            default: this.zero = ""; break
+          }
+          this.$http.put('/api/v1/students/' + response.data, {
+            "stNumber": "12" + this.entranceYear.toString().substring(0,2) + this.zero + response.data
+          })
+        })
         alert('신규 학생 정보가 등록되었습니다')
         this.$router.push('/student')
       }).catch((ex) => {
@@ -115,7 +128,7 @@ export default {
     },
     selectUNIV() {
 
-    }
+    },
   }
 }
 </script>

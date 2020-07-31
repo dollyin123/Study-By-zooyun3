@@ -64,4 +64,8 @@ public class Students {
         this.entranceYear = entranceYear;
         this.picture = picture;
     }
+
+    public void stNumberUpdate(String stNumber) {
+        this.stNumber = stNumber;
+    }
 }
