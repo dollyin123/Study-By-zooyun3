@@ -5,9 +5,6 @@ import com.study.zooyun3.springboot.config.auth.dto.SessionUser;
 import com.study.zooyun3.springboot.service.address.AddressService;
 import com.study.zooyun3.springboot.service.posts.PostsService;
 import com.study.zooyun3.springboot.service.student.StudentService;
-import com.study.zooyun3.springboot.web.dto.address.AddressOoopmienRequestDto;
-import com.study.zooyun3.springboot.web.dto.address.AddressSidoRequestDto;
-import com.study.zooyun3.springboot.web.dto.address.AddressSigunguRequestDto;
 import com.study.zooyun3.springboot.web.dto.posts.PostsListResponseDto;
 import com.study.zooyun3.springboot.web.dto.posts.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -50,17 +47,22 @@ public class VueJsonController {
     }
 
     @GetMapping("/json/sido.json")
-    public @ResponseBody List<AddressSidoRequestDto> sido() {
+    public @ResponseBody List<String> sido() {
         return addressService.findSido();
     }
 
     @GetMapping("/json/sigungu{sido}.json")
-    public @ResponseBody List<AddressSigunguRequestDto> sigungu(@PathVariable String sido) {
-        return addressService.findSigungu(sido);
+    public @ResponseBody List<String> sigunguBySido(@PathVariable String sido) {
+        return addressService.findSigunguBySido(sido);
+    }
+
+    @GetMapping("/json/andoopmien{sido}.json")
+    public @ResponseBody List<String> oopmienBySido(@PathVariable String sido) {
+        return addressService.findOopmienBySido(sido);
     }
 
     @GetMapping("/json/oopmien{sigungu}.json")
-    public @ResponseBody List<AddressOoopmienRequestDto> oopmien(@PathVariable String sigungu) {
-        return addressService.findOppmien(sigungu);
+    public @ResponseBody List<String> oopmienBySigungu(@PathVariable String sigungu) {
+        return addressService.findOopmienBySigungu(sigungu);
     }
 }

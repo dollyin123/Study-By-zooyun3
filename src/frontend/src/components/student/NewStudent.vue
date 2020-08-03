@@ -2,49 +2,59 @@
   <div>
     <h1>학생정보 신규입력</h1>
     <div class="col-md-12">
-      <div class="col-md-5">
+      <div class="col-md-6">
         <b-form @submit="onSubmit">
           <!-- TODO 대학 학과 DB처리 -->
           <label class="mr-sm-2">소속 대학 : </label>
-          <b-form-select class="topStyle" v-model="university" :options="universityList" v-on:select="selectUNIV"
+          <b-form-select class="Style35" v-model="university" :options="universityList" v-on:select="selectUNIV"
           ></b-form-select>
           <br><br>
           <label class="mr-sm-2">소속 학과 : </label>
-          <b-form-select class="topStyle" v-model="major" :options="majorList"></b-form-select>
+          <b-form-select class="Style35" v-model="major" :options="majorList"></b-form-select>
           <br><br>
           <label class="mr-sm-2">학기 : </label>
-          <b-form-select class="topStyle" v-model="grade" :options="grades"></b-form-select>
+          <b-form-select class="Style35" v-model="grade" :options="grades"></b-form-select>
           <br><br>
           <label class="mr-sm-2">이름 : </label>
-          <b-form-input class="topStyle" v-model="name" placeholder="ex) 홍길동" required></b-form-input>
+          <b-form-input class="Style35" v-model="name" placeholder="ex) 홍길동" required></b-form-input>
           <br><br>
           <label class="mr-sm-2">성별 : </label>
-          <b-form-radio-group class="topStyle" v-model="sex">
+          <b-form-radio-group class="Style35" v-model="sex">
             <b-form-radio value="남">남</b-form-radio>
             <b-form-radio value="여">여</b-form-radio>
           </b-form-radio-group>
           <br><br>
           <label class="mr-sm-2">전화번호 : </label>
-          <b-form-input class="middleStyle" v-model="firstNum" readonly></b-form-input>-
-          <b-form-input class="middleStyle" v-model="secondNum" required></b-form-input>-
-          <b-form-input class="middleStyle" v-model="lastNum" required></b-form-input>
+          <b-form-input class="Style10" v-model="firstNum" readonly></b-form-input>-
+          <b-form-input class="Style10" v-model="secondNum" required></b-form-input>-
+          <b-form-input class="Style10" v-model="lastNum" required></b-form-input>
           <br><br>
           <!-- TODO 주소 외부 프로그램 가져와보기 -->
           <label class="mr-sm-2">주소 : </label>
-          <b-form-select class="topStyle" v-model="sido" :options="sidoList" v-on:select="findSigungu"
-          ></b-form-select>
-          <b-form-select class="topStyle" v-model="sigungu" :options="sigunguList" v-on:select="findOopmien"
-          ></b-form-select>
-          <b-form-select class="topStyle" v-model="oopmien" :options="oopmienList"></b-form-select>
+          <b-form-select class="Style25" v-model="sido" :options="sidoList" v-on:change="findSigungu">
+            <template v-slot:first>
+              <b-form-select-option :value="null" disabled>-- 시도 --</b-form-select-option>
+            </template>
+          </b-form-select>&nbsp;
+          <b-form-select class="Style25" v-model="sigungu" :options="sigunguList" v-on:change="findOopmien">
+            <template v-slot:first>
+              <b-form-select-option :value="null" disabled>-- 시군구 --</b-form-select-option>
+            </template>
+          </b-form-select>&nbsp;
+          <b-form-select class="Style25" v-model="oopmien" :options="oopmienList">
+            <template v-slot:first>
+              <b-form-select-option :value="null" disabled>-- 읍면 --</b-form-select-option>
+            </template>
+          </b-form-select>
           <br><br>
           <label class="mr-sm-2">생년월일 : </label>
-          <b-form-datepicker class="topStyle" v-model="birthday"></b-form-datepicker>
+          <b-form-datepicker class="Style35" v-model="birthday"></b-form-datepicker>
           <br>
           <label class="mr-sm-2">입학년도 : </label>
-          <b-form-datepicker class="topStyle" v-model="entranceYear"></b-form-datepicker>
+          <b-form-datepicker class="Style35" v-model="entranceYear"></b-form-datepicker>
           <br>
           <label class="mr-sm-2">증명사진 : </label>
-          <b-form-file class="bottomStyle"
+          <b-form-file class="Style60"
                        v-model="picture"
                        :state="Boolean(picture)"
                        accept="image/png"
@@ -124,7 +134,7 @@ export default {
         "address": this.address, // TODO
         "birthday": this.birthday,
         "entranceYear": this.entranceYear,
-        "picture": this.picture,
+        "picture": null, //TODO
       }).then(() => {
         this.$http.get('/json/newId.json').then((response) => {
           switch (response.data.toString().length) {
@@ -152,13 +162,19 @@ export default {
     findSido() {
       this.$http.get('/json/sido.json').then((response) => {
         this.sidoList = response.data
-      }).catch((ex) => {
-        alert("API Error : " + ex)
       })
     },
     findSigungu() {
+      this.sigunguList = null;
+      this.oopmienList = null;
       this.$http.get('/json/sigungu'+this.sido+'.json').then((response) => {
-        this.sigunguList = response.data
+        if(response.data != "") {
+          this.sigunguList = response.data
+        } else {
+          this.$http.get('/json/andoopmien'+this.sido+'.json').then((response) => {
+              this.oopmienList = response.data
+          })
+        }
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
@@ -175,16 +191,20 @@ export default {
 </script>
 
 <style scoped>
-.topStyle {
+.Style60 {
+  display: inline-block;
+  width: 60%;
+}
+.Style35 {
   display: inline-block;
   width: 35%;
 }
-.middleStyle {
+.Style25 {
+  display: inline-block;
+  width: 25%;
+}
+.Style10 {
   display: inline-block;
   width: 10%;
-}
-.bottomStyle {
-  display: inline-block;
-  width: 60%;
 }
 </style>
