@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-public class StudentCotroller {
+public class StudentApiCotroller {
     private final StudentService studentService;
 
     @PostMapping("/api/v1/students")

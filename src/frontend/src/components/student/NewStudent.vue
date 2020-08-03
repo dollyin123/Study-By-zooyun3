@@ -31,7 +31,11 @@
           <br><br>
           <!-- TODO 주소 외부 프로그램 가져와보기 -->
           <label class="mr-sm-2">주소 : </label>
-          <b-form-input class="topStyle" v-model="address" required></b-form-input>
+          <b-form-select class="topStyle" v-model="sido" :options="" v-on:select="findSigungu"
+          ></b-form-select>
+          <b-form-select class="topStyle" v-model="sigungu" :options="sigunguList" v-on:select="findOopmien"
+          ></b-form-select>
+          <b-form-select class="topStyle" v-model="oopmien" :options="oopmienList"></b-form-select>
           <br><br>
           <label class="mr-sm-2">생년월일 : </label>
           <b-form-datepicker class="topStyle" v-model="birthday"></b-form-datepicker>
@@ -43,7 +47,7 @@
           <b-form-file class="bottomStyle"
                        v-model="picture"
                        :state="Boolean(picture)"
-                       accept=".png"
+                       accept="image/png"
                        placeholder="Choose a file or drop it here..."
                        drop-placeholder="Drop file here..."
                        required
@@ -89,9 +93,22 @@ export default {
       firstNum: "010",
       secondNum: "",
       lastNum: "",
+      sido: null,
+      sigungu: null,
+      oopmien: null,
+      sidoList: [],
+      sigunguList: [],
+      oopmienList: [],
 
       zero: "",
     }
+  },
+  created() {
+    this.findUNIV()
+    this.findSido()
+  },
+  watch: {
+    '$route': 'getData'
   },
   methods: {
     onSubmit(evt) {
@@ -126,9 +143,33 @@ export default {
         alert("API Error : " + ex)
       })
     },
-    selectUNIV() {
+    findUNIV() {
 
     },
+    findMajor() {
+
+    },
+    findSido() {
+      this.$http.get('/json/sido.json').then((response) => {
+        this.sidoList = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    },
+    findSigungu() {
+      this.$http.get('/json/sigungu'+this.sido+'.json').then((response) => {
+        this.sigunguList = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    },
+    findOopmien() {
+      this.$http.get('/json/oopmien'+this.sigungu+'.json').then((response) => {
+        this.oopmienList = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    }
   }
 }
 </script>
