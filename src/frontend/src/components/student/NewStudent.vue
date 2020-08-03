@@ -31,7 +31,7 @@
           <br><br>
           <!-- TODO 주소 외부 프로그램 가져와보기 -->
           <label class="mr-sm-2">주소 : </label>
-          <b-form-select class="topStyle" v-model="sido" :options="" v-on:select="findSigungu"
+          <b-form-select class="topStyle" v-model="sido" :options="sidoList" v-on:select="findSigungu"
           ></b-form-select>
           <b-form-select class="topStyle" v-model="sigungu" :options="sigunguList" v-on:select="findOopmien"
           ></b-form-select>
