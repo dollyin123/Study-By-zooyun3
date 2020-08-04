@@ -1,4 +1,6 @@
 package com.study.zooyun3.springboot.domain.score;
 
-public interface ScoreRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ScoreRepository extends JpaRepository<Score, Long> {
 }

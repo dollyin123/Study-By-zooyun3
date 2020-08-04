@@ -4,7 +4,6 @@
     <div class="col-md-12">
       <div class="col-md-6">
         <b-form @submit="onSubmit">
-          <!-- TODO 대학 학과 DB처리 -->
           <label class="mr-sm-2">소속 대학 : </label>
           <b-form-select class="Style35" v-model="university" :options="universityList" v-on:change="findMajor"
                          required>
@@ -40,7 +39,7 @@
           <b-form-input class="Style10" v-model="lastNum" required></b-form-input>
           <br><br>
           <label class="mr-sm-2">주소 : </label>
-          <b-form-select class="Style25" v-model="sido" :options="sidoList" v-on:change="findSigungu">
+          <b-form-select class="Style25" v-model="sido" :options="sidoList" v-on:change="findSigungu" required>
             <template v-slot:first>
               <b-form-select-option :value="null" disabled>-- 시도 --</b-form-select-option>
             </template>
@@ -132,27 +131,28 @@ export default {
     this.findUNIV()
     this.findSido()
   },
-  watch: {
-    '$route': 'getData'
-  },
   methods: {
     onSubmit(evt) {
       evt.preventDefault()
-      this.$http.get('/json/universityCode'+this.university+'.json').then((response) => {
+      this.$http.get('/json/universityCode' + this.university + '.json').then((response) => {
         this.university = response.data
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
-      this.$http.get('/json/majorCode'+this.major+'.json').then((response) => {
+      this.$http.get('/json/majorCode' + this.major + '.json').then((response) => {
         this.major = response.data
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
       if (this.sigungu != null) {
         this.sigungu = " " + this.sigungu
+      } else {
+        this.sigungu = ""
       }
       if (this.oopmien != null) {
         this.oopmien = " " + this.oopmien
+      } else {
+        this.oopmien = ""
       }
       this.address = this.sido + this.sigungu + this.oopmien + " " + this.moreaddress
       this.$http.post('/api/v1/students', {
@@ -183,7 +183,7 @@ export default {
       })
     },
     findMajor() {
-      this.$http.get('/json/majorList'+this.university+'.json').then((response) => {
+      this.$http.get('/json/majorList' + this.university + '.json').then((response) => {
         this.majorList = response.data
       }).catch((ex) => {
         alert("API Error : " + ex)
@@ -236,6 +236,9 @@ export default {
           "stNumber": "12" + this.entranceYear.toString().substring(0, 2) + this.zero + response.data
         })
       })
+    },
+    uploadImage() {
+
     },
   }
 }

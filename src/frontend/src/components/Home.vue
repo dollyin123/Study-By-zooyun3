@@ -23,9 +23,6 @@ export default {
   created() {
     this.getData()
   },
-  watch: {
-    '$route': 'getData'
-  },
   methods: {
     getData() {
       this.$http.get('/json/MyName.json').then((response) => {

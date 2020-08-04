@@ -6,6 +6,7 @@ import Posts_update from "./components/posts/Posts-update";
 import Board from "./components/posts/Board";
 import StudentManager from "@/components/student/StudentManager";
 import NewStudent from "@/components/student/NewStudent";
+import Student_update from './components/student/Student-update';
 
 Vue.use(VueRouter)
 
@@ -18,5 +19,6 @@ export default new VueRouter({
         { path: '/posts', component: Board },
         { path: '/student', component: StudentManager },
         { path: '/student/new', component: NewStudent },
+        { path: '/student/update/:id', component: Student_update },
     ]
 })

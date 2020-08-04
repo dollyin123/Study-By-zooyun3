@@ -50,9 +50,6 @@ export default {
   created() {
     this.getData()
   },
-  watch: {
-    '$route': 'getData'
-  },
   methods: {
     getData() {
       this.$http.get('/json/posts.json').then((response) => {
