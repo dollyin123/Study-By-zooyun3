@@ -1,11 +1,14 @@
-package com.study.zooyun3.springboot.web;
+package com.study.zooyun3.springboot.web.controller.posts;
 
 import com.study.zooyun3.springboot.service.posts.PostsService;
+import com.study.zooyun3.springboot.web.dto.posts.PostsListResponseDto;
 import com.study.zooyun3.springboot.web.dto.posts.PostsResponseDto;
 import com.study.zooyun3.springboot.web.dto.posts.PostsSaveRequestDto;
 import com.study.zooyun3.springboot.web.dto.posts.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,5 +35,16 @@ public class PostsApiController {
     public Long delete(@PathVariable Long id) {
         postsService.delete(id);
         return id;
+    }
+
+    @GetMapping("/json/{id}/post.json")
+    public @ResponseBody PostsResponseDto post(@PathVariable Long id) {
+        return postsService.findById(id);
+    }
+
+    @GetMapping("/json/posts.json")
+    public @ResponseBody
+    List<PostsListResponseDto> posts() {
+        return postsService.findAllDesc();
     }
 }
