@@ -65,6 +65,15 @@ public class Students {
         this.picture = picture;
     }
 
+    @Builder
+    public Students(String university, String major, Integer grade, String stNumber, String name) {
+        this.university = university;
+        this.major = major;
+        this.grade = grade;
+        this.stNumber = stNumber;
+        this.name = name;
+    }
+
     public void stNumberUpdate(String stNumber) {
         this.stNumber = stNumber;
     }
