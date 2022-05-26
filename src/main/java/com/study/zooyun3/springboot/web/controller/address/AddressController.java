@@ -14,24 +14,24 @@ import java.util.List;
 public class AddressController {
     private final AddressService addressService;
 
-    @GetMapping("/json/sido.json")
+    @GetMapping("/json/getSido.json")
     public @ResponseBody
-    List<String> sido() {
-        return addressService.findSido();
+    List<String> selectSido() {
+        return addressService.selectSido();
     }
 
-    @GetMapping("/json/sigungu{sido}.json")
-    public @ResponseBody List<String> sigunguBySido(@PathVariable String sido) {
-        return addressService.findSigunguBySido(sido);
+    @GetMapping("/json/getSigungu{sido}.json")
+    public @ResponseBody List<String> selectSigunguBySido(@PathVariable String sido) {
+        return addressService.selectSigunguBySido(sido);
     }
 
-    @GetMapping("/json/andoopmien{sido}.json")
-    public @ResponseBody List<String> oopmienBySido(@PathVariable String sido) {
-        return addressService.findOopmienBySido(sido);
+    @GetMapping("/json/getOopmienBySido{sido}.json")
+    public @ResponseBody List<String> selectOopmienBySido(@PathVariable String sido) {
+        return addressService.selectOopmienBySido(sido);
     }
 
-    @GetMapping("/json/oopmien{sigungu}.json")
-    public @ResponseBody List<String> oopmienBySigungu(@PathVariable String sigungu) {
-        return addressService.findOopmienBySigungu(sigungu);
+    @GetMapping("/json/getOopmienBySigungu{sigungu}.json")
+    public @ResponseBody List<String> selectOopmienBySigungu(@PathVariable String sigungu) {
+        return addressService.selectOopmienBySigungu(sigungu);
     }
 }

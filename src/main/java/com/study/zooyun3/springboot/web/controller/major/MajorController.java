@@ -14,15 +14,15 @@ import java.util.List;
 public class MajorController {
     private final MajorService majorService;
 
-    @GetMapping("/json/majorList{university}.json")
-    public @ResponseBody List<String> majorListByUniversityCode(@PathVariable String university) {
-        return majorService.majorListByUniversityCode(university);
+    @GetMapping("/json/getMajorList{university}.json")
+    public @ResponseBody List<String> selectMajorListByUniversityCode(@PathVariable String university) {
+        return majorService.selectMajorListByUniversityCode(university);
     }
 
-    @GetMapping("/json/majorCode{major}.json")
+    @GetMapping("/json/getMajorCodeByMajor{major}.json")
     public @ResponseBody
-    String findMajorCode(@PathVariable String major) {
-        return majorService.findMajorCode(major);
+    String selectMajorCodeByMajor(@PathVariable String major) {
+        return majorService.selectMajorCodeByMajor(major);
     }
 
     @GetMapping("/json/major{majorCode}.json")

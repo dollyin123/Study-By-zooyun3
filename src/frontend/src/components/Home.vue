@@ -1,12 +1,34 @@
 <template>
-  <div>
-    <div v-if="!getName" style="text-align: center;">
+  <div class="p-5" style="background-color: #FAFAFA;">
+    <div v-if="!isGetName" style="text-align: center;">
       <br>
       <img src="../assets/naver.png" v-on:click="naverLogin">
       <br>
       <img src="../assets/google.png" v-on:click="googleLogin">
+      <br>
+      <b-card>
+        <b-card-body>
+          <div class="col-md-12">
+            <b-form @submit="onSubmit">
+              <b-form-group label="사용자">
+                <b-form-radio-group
+                    v-model="selected"
+                    :options="options"
+                ></b-form-radio-group>
+              </b-form-group>
+              <b-form-group label="아이디 : ">
+                <b-form-input v-model="number" required></b-form-input>
+              </b-form-group>
+              <b-form-group label="비밀번호 : ">
+                <b-form-input v-model="password" required></b-form-input>
+              </b-form-group>
+              <b-button type="submit" variant="primary">로그인</b-button>
+            </b-form>
+          </div>
+        </b-card-body>
+      </b-card>
     </div>
-    <div v-if="getName">
+    <div v-if="isGetName">
       <h1>스프링부트로 시작하는 웹 서비스 Ver.2</h1>
     </div>
   </div>
@@ -17,27 +39,57 @@ export default {
   name: "Home",
   data() {
     return {
-      getName: false,
+      isGetName: false,
+      myName: '',
+      selected: 'student',
+      options: [
+        {text: '학생', value: 'student'},
+        {text: '교수', value: 'professor'},
+      ],
+      number: null,
+      password: null,
     }
   },
   created() {
-    this.getData()
+    this.getName()
   },
   methods: {
-    getData() {
-      this.$http.get('/json/MyName.json').then((response) => {
-        if (response.data != "") {
-          this.getName = true
+    onSubmit(evt) { //TODO
+      evt.preventDefault()
+      this.$http.post('/user', {
+        "email": this.number,
+        "password": this.password,
+        "name": this.number,
+        "role": "ROLE_USER"
+      }).then(() => {
+        alert('등록완료')
+        this.$http.post('/login', {
+          "email": this.number,
+          "password": this.password,
+        }).then(() => {
+          alert('로그인')
+          window.location.reload();
+        }).catch((ex) => {
+          alert("API Error : " + ex)
+        })
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    },
+    getName() {
+      this.$http.get('/json/getname').then((response) => {
+        if (response.data != '') {
+          this.isGetName = true
         }
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
     },
     naverLogin() {
-      location.href="/oauth2/authorization/naver"
+      location.href = "/oauth2/authorization/naver"
     },
     googleLogin() {
-      location.href="/oauth2/authorization/google"
+      location.href = "/oauth2/authorization/google"
     }
   },
 }

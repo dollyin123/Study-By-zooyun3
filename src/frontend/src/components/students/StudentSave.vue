@@ -5,7 +5,7 @@
       <div class="col-md-6">
         <b-form @submit="onSubmit">
           <label class="mr-sm-2">소속 대학 : </label>
-          <b-form-select class="Style35" v-model="university" :options="universityList" v-on:change="findMajor"
+          <b-form-select class="Style35" v-model="university" :options="universityList" v-on:change="getMajorList"
                          required>
             <template v-slot:first>
               <b-form-select-option :value="null" disabled>-- 소속대학 --</b-form-select-option>
@@ -39,41 +39,17 @@
           <b-form-input class="Style10" v-model="lastNum" required></b-form-input>
           <br><br>
           <label class="mr-sm-2">주소 : </label>
-          <b-form-select class="Style25" v-model="sido" :options="sidoList" v-on:change="findSigungu" required>
-            <template v-slot:first>
-              <b-form-select-option :value="null" disabled>-- 시도 --</b-form-select-option>
-            </template>
-          </b-form-select>&nbsp;
-          <b-form-select class="Style25" v-model="sigungu" :options="sigunguList" v-on:change="findOopmien">
-            <template v-slot:first>
-              <b-form-select-option :value="null" disabled>-- 시군구 --</b-form-select-option>
-            </template>
-          </b-form-select>&nbsp;
-          <b-form-select class="Style25" v-model="oopmien" :options="oopmienList">
-            <template v-slot:first>
-              <b-form-select-option :value="null" disabled>-- 읍면 --</b-form-select-option>
-            </template>
-          </b-form-select>
+          <b-button @click="openApi()">주소 찾기</b-button>
           <br><br>
-          <b-form-input class="Style60" type="text" v-model="moreaddress" placeholder="도로명" required></b-form-input>
+          <b-form-input class="Style35" v-model="roadAddress" placeholder="도로명주소"/>&nbsp;
           <br><br>
           <label class="mr-sm-2">생년월일 : </label>
           <b-form-datepicker class="Style35" v-model="birthday"></b-form-datepicker>
           <br>
           <label class="mr-sm-2">입학년도 : </label>
           <b-form-datepicker class="Style35" v-model="entranceYear"></b-form-datepicker>
-          <br>
-          <label class="mr-sm-2">증명사진 : </label>
-          <b-form-file class="Style60"
-                       v-model="picture"
-                       :state="Boolean(picture)"
-                       accept="image/png"
-                       placeholder="Choose a file or drop it here..."
-                       drop-placeholder="Drop file here..."
-                       required
-          ></b-form-file>
           <br><br>
-          <router-link to="/posts" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
+          <router-link v-bind:to="'/students/studentsboard'" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
           <b-button type="submit" variant="primary">등록</b-button>
         </b-form>
       </div>
@@ -93,10 +69,9 @@ export default {
       name: null,
       sex: '남',
       phoneNumber: null,
-      address: null,
       birthday: null,
       entranceYear: null,
-      picture: null,
+      id: null,
 
       universityList: [],
       majorList: [],
@@ -115,109 +90,37 @@ export default {
       secondNum: "",
       lastNum: "",
 
-      sido: null,
-      sigungu: null,
-      oopmien: null,
-      moreaddress: null,
-
-      sidoList: [],
-      sigunguList: [],
-      oopmienList: [],
+      roadAddress: null,
 
       zero: "",
     }
   },
+
   created() {
-    this.findUNIV()
-    this.findSido()
+    this.getUniversityList()
+    this.getSido()
   },
   methods: {
-    onSubmit(evt) {
+    openApi() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          this.roadAddress = data.roadAddress
+        }
+      }).open();
+    },
+    async onSubmit(evt) {
       evt.preventDefault()
-      this.$http.get('/json/universityCode' + this.university + '.json').then((response) => {
+      await this.$http.get('/json/getUniversityCodeByUniversity' + this.university + '.json').then((response) => {
         this.university = response.data
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
-      this.$http.get('/json/majorCode' + this.major + '.json').then((response) => {
+      await this.$http.get('/json/getMajorCodeByMajor' + this.major + '.json').then((response) => {
         this.major = response.data
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
-      if (this.sigungu != null) {
-        this.sigungu = " " + this.sigungu
-      } else {
-        this.sigungu = ""
-      }
-      if (this.oopmien != null) {
-        this.oopmien = " " + this.oopmien
-      } else {
-        this.oopmien = ""
-      }
-      this.address = this.sido + this.sigungu + this.oopmien + " " + this.moreaddress
-      this.$http.post('/api/v1/students', {
-        "university": this.university,
-        "major": this.major,
-        "stNumber": "0",
-        "grade": this.grade,
-        "name": this.name,
-        "sex": this.sex,
-        "phoneNumber": this.firstNum + "-" + this.secondNum + "-" + this.lastNum,
-        "address": this.address,
-        "birthday": this.birthday,
-        "entranceYear": this.entranceYear,
-        "picture": null, //TODO
-      }).then(() => {
-        this.getStId()
-        alert('신규 학생 정보가 등록되었습니다')
-        this.$router.push('/student')
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    findUNIV() {
-      this.$http.get('/json/universityList.json').then((response) => {
-        this.universityList = response.data
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    findMajor() {
-      this.$http.get('/json/majorList' + this.university + '.json').then((response) => {
-        this.majorList = response.data
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    findSido() {
-      this.$http.get('/json/sido.json').then((response) => {
-        this.sidoList = response.data
-      })
-    },
-    findSigungu() {
-      this.sigunguList = null;
-      this.oopmienList = null;
-      this.$http.get('/json/sigungu' + this.sido + '.json').then((response) => {
-        if (response.data != "") {
-          this.sigunguList = response.data
-        } else {
-          this.$http.get('/json/andoopmien' + this.sido + '.json').then((response) => {
-            this.oopmienList = response.data
-          })
-        }
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    findOopmien() {
-      this.$http.get('/json/oopmien' + this.sigungu + '.json').then((response) => {
-        this.oopmienList = response.data
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    getStId() {
-      this.$http.get('/json/newId.json').then((response) => {
+      await this.$http.get('/json/newId.json').then((response) => {
         switch (response.data.toString().length) {
           case 1:
             this.zero = "000";
@@ -228,38 +131,84 @@ export default {
           case 3:
             this.zero = "0";
             break
-          default:
+          case 4:
             this.zero = "";
             break
+          default :
+            this.zero = "000";
         }
-        this.$http.put('/api/v1/students/' + response.data, {
-          "stNumber": "12" + this.entranceYear.toString().substring(0, 2) + this.zero + response.data
-        })
+        this.id = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+      await this.$http.post('/api/students', {
+        "university": this.university,
+        "major": this.major,
+        "stNumber" : "12" + this.entranceYear.toString().substring(2, 4) + this.zero + (this.id + 1),
+        "grade": this.grade,
+        "name": this.name,
+        "sex": this.sex,
+        "phoneNumber": this.firstNum + "-" + this.secondNum + "-" + this.lastNum,
+        "address": this.roadAddress,
+        "birthday": this.birthday,
+        "entranceYear": this.entranceYear,
+      }).then(() => {
+        alert('신규 학생 정보가 등록되었습니다')
+        this.$router.push('/students')
+      }).catch((ex) => {
+        alert("API Error : " + ex)
       })
     },
-    uploadImage() {
-
+    getUniversityList() {
+      this.$http.get('/json/getUniversityList.json').then((response) => {
+        this.universityList = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    },
+    getMajorList() {
+      this.$http.get('/json/getMajorList' + this.university + '.json').then((response) => {
+        this.majorList = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    },
+    getSido() {
+      this.$http.get('/json/getSido.json').then((response) => {
+        this.sidoList = response.data
+      })
+    },
+    getSigungu() {
+      this.sigunguList = null;
+      this.oopmienList = null;
+      this.$http.get('/json/getSigungu' + this.sido + '.json').then((response) => {
+        if (response.data !== "") {
+          this.sigunguList = response.data
+        } else {
+          this.$http.get('/json/getOopmienBySido' + this.sido + '.json').then((response) => {
+            this.oopmienList = response.data
+          })
+        }
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
+    },
+    getOopmien() {
+      this.$http.get('/json/getOopmienBySigungu' + this.sigungu + '.json').then((response) => {
+        this.oopmienList = response.data
+      }).catch((ex) => {
+        alert("API Error : " + ex)
+      })
     },
   }
 }
 </script>
 
 <style scoped>
-.Style60 {
-  display: inline-block;
-  width: 60%;
-}
-
 .Style35 {
   display: inline-block;
   width: 35%;
 }
-
-.Style25 {
-  display: inline-block;
-  width: 25%;
-}
-
 .Style10 {
   display: inline-block;
   width: 10%;

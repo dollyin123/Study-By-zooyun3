@@ -16,9 +16,8 @@
           <b-form-group label="내용 : ">
             <b-form-textarea v-model="content" v-bind:value="postDTO.content" required></b-form-textarea>
           </b-form-group>
-          <router-link to="/posts" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
+          <router-link v-bind:to="'/posts/postdetail/id=' + id + '/no=' + no" role="button" class="btn btn-secondary">취소</router-link>&nbsp;
           <b-button type="submit" variant="primary">수정 완료</b-button>&nbsp;
-          <button type="button" class="btn btn-danger" v-on:click="deleteText">삭제</button>
         </b-form>
       </div>
     </div>
@@ -32,6 +31,7 @@ export default {
     return {
       postDTO: [],
       id: this.$route.params.id,
+      no: this.$route.params.postnumber,
       title: "",
       content: "",
     }
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     getData() {
-      this.$http.get('/json/' + this.id + '/post.json').then((response) => {
+      this.$http.get('/json/' + this.no + '/post.json').then((response) => {
         this.postDTO = response.data
         this.title = this.postDTO.title
         this.content = this.postDTO.content
@@ -51,24 +51,16 @@ export default {
     },
     onSubmit(evt) {
       evt.preventDefault()
-      this.$http.put('/api/v1/posts/' + this.id, {
+      this.$http.put('/api/posts/' + this.no, {
         "title": this.title,
         "content": this.content,
       }).then(() => {
         alert('글이 수정되었습니다')
-        this.$router.push('/posts')
+        this.$router.push('/posts/postdetail/id=' + this.id + '/no=' + this.no)
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
     },
-    deleteText() {
-      this.$http.delete('/api/v1/posts/' + this.id).then(() => {
-        alert('글이 삭제되었습니다')
-        this.$router.push('/posts')
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    }
   }
 }
 </script>

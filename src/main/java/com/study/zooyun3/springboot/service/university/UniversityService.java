@@ -14,13 +14,13 @@ public class UniversityService {
     private final UniversityRepository universityRepository;
 
     @Transactional(readOnly = true)
-    public List<String> UniversityList() {
-        return universityRepository.universityList().stream().map(String::new).collect(Collectors.toList());
+    public List<String> selectUniversityList() {
+        return universityRepository.selectUniversityList().stream().map(String::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public String findUniversityCode(String university) {
-        return universityRepository.findUniversityCode(university);
+    public String selectUniversityCodeByUniversity(String university) {
+        return universityRepository.selectUniversityCodeByUniversity(university);
     }
 
     @Transactional(readOnly = true)

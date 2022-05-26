@@ -3,7 +3,8 @@ package com.study.zooyun3.springboot.web.controller.student;
 import com.study.zooyun3.springboot.service.student.StudentService;
 import com.study.zooyun3.springboot.web.dto.student.StudentListResponseDto;
 import com.study.zooyun3.springboot.web.dto.student.StudentSaveRequestDto;
-import com.study.zooyun3.springboot.web.dto.student.StudentStNumberUpdateRequestDto;
+import com.study.zooyun3.springboot.web.dto.student.StudentUpdateRequestDto;
+import com.study.zooyun3.springboot.web.dto.student.StudentsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,23 +15,34 @@ import java.util.List;
 public class StudentController {
     private final StudentService studentService;
 
-    @PostMapping("/api/v1/students")
+    @PostMapping("/api/students")
     public Long save(@RequestBody StudentSaveRequestDto requestDto) {
         return studentService.save(requestDto);
     }
 
-    @PutMapping("/api/v1/students/{id}")
-    public Long update(@PathVariable Long id, @RequestBody StudentStNumberUpdateRequestDto requestDto) {
+    @PutMapping("/api/students/{id}")
+    public Long update(@PathVariable Long id, @RequestBody StudentUpdateRequestDto requestDto) {
         return studentService.update(id, requestDto);
     }
 
     @GetMapping("/json/newId.json")
-    public @ResponseBody String idByStNumber() {
-        return studentService.idByStNumber();
+    public @ResponseBody String maxId() {
+        return studentService.maxId();
     }
 
-    @GetMapping("/json/simpleList.json")
-    public @ResponseBody List<StudentListResponseDto> simpleList() {
-        return studentService.simpleList();
+    @GetMapping("/json/studentList.json/page={page}")
+    public @ResponseBody List<StudentListResponseDto> simpleList(@PathVariable int page) {
+        return studentService.studentList(page);
+    }
+
+    @GetMapping("/getrows")
+    public int findRows() {
+        return (studentService.findRows()/25)+1;
+    }
+
+    @GetMapping("/json/{no}/student.json")
+    public @ResponseBody
+    StudentsResponseDto student(@PathVariable Long no) {
+        return studentService.findByNo(no);
     }
 }

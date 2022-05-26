@@ -8,11 +8,14 @@ import java.util.List;
 
 public interface UniversityRepository extends JpaRepository<University, Long> {
     @Query("SELECT university FROM University")
-    List<String> universityList();
+    List<String> selectUniversityList();
 
     @Query("SELECT universityCode FROM University WHERE university = :university")
-    String findUniversityCode(@Param("university") String university);
+    String selectUniversityCodeByUniversity(@Param("university") String university);
 
     @Query("SELECT university FROM University WHERE universityCode = :universityCode")
     String findUniversity(@Param("universityCode") String universityCode);
+
+    @Query("select u.university from Students s inner join University u on s.university = u.universityCode")
+    List<University> universityList();
 }

@@ -41,8 +41,8 @@ public class PostsService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsListResponseDto> findAllDesc() {
-        return postsRepository.findAllDesc().stream().map(PostsListResponseDto::new).collect(Collectors.toList());
+    public List<PostsListResponseDto> findAllDesc(String board, int page) {
+        return postsRepository.findAllDesc(board, (page*25)-25).stream().map(PostsListResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
@@ -50,5 +50,9 @@ public class PostsService {
         Posts posts = postsRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
         postsRepository.delete(posts);
+    }
+
+    public int findRows(String board) {
+        return postsRepository.findRows(board);
     }
 }

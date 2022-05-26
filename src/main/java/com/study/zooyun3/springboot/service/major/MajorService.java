@@ -16,15 +16,15 @@ public class MajorService {
     private final UniversityRepository universityRepository;
 
     @Transactional(readOnly = true)
-    public List<String> majorListByUniversityCode(String university) {
-        String universityCode = universityRepository.findUniversityCode(university);
-        return majorRepository.majorListByUniversityCode(universityCode).stream().map(String::new)
+    public List<String> selectMajorListByUniversityCode(String university) {
+        String universityCode = universityRepository.selectUniversityCodeByUniversity(university);
+        return majorRepository.selectMajorListByUniversityCode(universityCode).stream().map(String::new)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public String findMajorCode(String major) {
-        return majorRepository.findMajorCode(major);
+    public String selectMajorCodeByMajor(String major) {
+        return majorRepository.selectMajorCodeByMajor(major);
     }
 
     @Transactional(readOnly = true)

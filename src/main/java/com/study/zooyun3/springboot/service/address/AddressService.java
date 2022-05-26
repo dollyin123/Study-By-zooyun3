@@ -14,15 +14,15 @@ public class AddressService {
     private final AddressRepository addressRepository;
 
     @Transactional(readOnly = true)
-    public List<String> findSido() {
-        return addressRepository.findSido().stream().map(String::new).collect(Collectors.toList());
+    public List<String> selectSido() {
+        return addressRepository.selectSido().stream().map(String::new).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<String> findSigunguBySido(String sido) {
+    public List<String> selectSigunguBySido(String sido) {
         List<String> sigunguList;
         try {
-            sigunguList = addressRepository.findSigunguBySido(sido).stream().map(String::new).collect(Collectors.toList());
+            sigunguList = addressRepository.selectSigunguBySido(sido).stream().map(String::new).collect(Collectors.toList());
         } catch (NullPointerException e) {
             return null;
         }
@@ -30,10 +30,10 @@ public class AddressService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> findOopmienBySido(String sido) {
+    public List<String> selectOopmienBySido(String sido) {
         List<String> oopmienList;
         try {
-            oopmienList = addressRepository.findOopmienBySido(sido).stream().map(String::new).collect(Collectors.toList());
+            oopmienList = addressRepository.selectOopmienBySido(sido).stream().map(String::new).collect(Collectors.toList());
         } catch (NullPointerException e) {
             return null;
         }
@@ -41,10 +41,10 @@ public class AddressService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> findOopmienBySigungu(String sigundu) {
+    public List<String> selectOopmienBySigungu(String sigundu) {
         List<String> oopmienList;
         try {
-            oopmienList = addressRepository.findOopmienBySigungu(sigundu).stream().map(String::new).collect(Collectors.toList());
+            oopmienList = addressRepository.selectOopmienBySigungu(sigundu).stream().map(String::new).collect(Collectors.toList());
         } catch (NullPointerException e) {
             return null;
         }

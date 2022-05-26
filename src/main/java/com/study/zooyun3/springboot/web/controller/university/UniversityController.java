@@ -14,14 +14,14 @@ import java.util.List;
 public class UniversityController {
     private final UniversityService universityService;
 
-    @GetMapping("/json/universityList.json")
-    public @ResponseBody List<String> universityList() {
-        return universityService.UniversityList();
+    @GetMapping("/json/getUniversityList.json")
+    public @ResponseBody List<String> selectUniversityList() {
+        return universityService.selectUniversityList();
     }
 
-    @GetMapping("/json/universityCode{university}.json")
-    public @ResponseBody String findUniversityCode(@PathVariable String university) {
-        return universityService.findUniversityCode(university);
+    @GetMapping("/json/getUniversityCodeByUniversity{university}.json")
+    public @ResponseBody String selectUniversityCodeByUniversity(@PathVariable String university) {
+        return universityService.selectUniversityCodeByUniversity(university);
     }
 
     @GetMapping("/json/university{universityCode}.json")

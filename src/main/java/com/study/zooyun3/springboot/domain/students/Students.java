@@ -74,7 +74,8 @@ public class Students {
         this.name = name;
     }
 
-    public void stNumberUpdate(String stNumber) {
-        this.stNumber = stNumber;
+    public void studentUpdate(String phoneNumber, String address) {
+        this.phoneNumber = phoneNumber;
+        this.address = address;
     }
 }

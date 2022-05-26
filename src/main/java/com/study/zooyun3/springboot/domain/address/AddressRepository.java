@@ -8,14 +8,14 @@ import java.util.List;
 
 public interface AddressRepository extends JpaRepository<Address, Long> {
     @Query("SELECT sido FROM Address GROUP BY sido")
-    List<String> findSido();
+    List<String> selectSido();
 
     @Query("SELECT sigungu FROM Address WHERE sido = :sido GROUP BY sigungu")
-    List<String> findSigunguBySido(@Param("sido") String sido);
+    List<String> selectSigunguBySido(@Param("sido") String sido);
 
     @Query("SELECT oopmien FROM Address WHERE sido = :sido AND NOT oopmien IS NULL GROUP BY oopmien")
-    List<String> findOopmienBySido(@Param("sido") String sido);
+    List<String> selectOopmienBySido(@Param("sido") String sido);
 
     @Query("SELECT oopmien  FROM Address WHERE sigungu = :sigungu GROUP BY oopmien")
-    List<String> findOopmienBySigungu(@Param("sigungu") String sigungu);
+    List<String> selectOopmienBySigungu(@Param("sigungu") String sigungu);
 }

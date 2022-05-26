@@ -1,5 +1,6 @@
 package com.study.zooyun3.springboot.config;
 
+import com.study.zooyun3.springboot.config.auth.CustomLoginUserArgumentResolver;
 import com.study.zooyun3.springboot.config.auth.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,11 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private final LoginUserArgumentResolver loginUserArgumentResolver;
+    private final CustomLoginUserArgumentResolver customLoginUserArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(loginUserArgumentResolver);
+        argumentResolvers.add(customLoginUserArgumentResolver);
     }
 }
