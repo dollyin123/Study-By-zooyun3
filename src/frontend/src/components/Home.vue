@@ -24,7 +24,7 @@
       </b-card>
     </div>
     <div v-if="isGetName">
-      <h1>스프링부트로 시작하는 웹 서비스 Ver.2</h1>
+      <h1>학생정보관리 사이트 프로젝트</h1>
     </div>
   </div>
 </template>
