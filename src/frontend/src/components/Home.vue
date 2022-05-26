@@ -10,12 +10,7 @@
         <b-card-body>
           <div class="col-md-12">
             <b-form @submit="onSubmit">
-              <b-form-group label="사용자">
-                <b-form-radio-group
-                    v-model="selected"
-                    :options="options"
-                ></b-form-radio-group>
-              </b-form-group>
+              <b-form-group label="로그인"/>
               <b-form-group label="아이디 : ">
                 <b-form-input v-model="number" required></b-form-input>
               </b-form-group>
@@ -41,11 +36,6 @@ export default {
     return {
       isGetName: false,
       myName: '',
-      selected: 'student',
-      options: [
-        {text: '학생', value: 'student'},
-        {text: '교수', value: 'professor'},
-      ],
       number: null,
       password: null,
     }
@@ -62,15 +52,13 @@ export default {
         "name": this.number,
         "role": "ROLE_USER"
       }).then(() => {
-        alert('등록완료')
         this.$http.post('/login', {
           "email": this.number,
           "password": this.password,
         }).then(() => {
-          alert('로그인')
           window.location.reload();
-        }).catch((ex) => {
-          alert("API Error : " + ex)
+        }).catch(() => {
+          alert("로그인 실패")
         })
       }).catch((ex) => {
         alert("API Error : " + ex)

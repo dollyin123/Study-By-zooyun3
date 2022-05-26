@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+
 @RequiredArgsConstructor
 @Service
 public class CustomAuthUserService implements UserDetailsService {
@@ -22,6 +23,9 @@ public class CustomAuthUserService implements UserDetailsService {
     }
 
     public Long save(CustomUserInfoDto infoDto) {
+        if(userRepository.findByEmail(infoDto.getEmail()).isPresent()) {
+            return null;
+        }
         return userRepository.save(infoDto.toEntity()).getId();
     }
 
