@@ -98,7 +98,6 @@ export default {
 
   created() {
     this.getUniversityList()
-    this.getSido()
   },
   methods: {
     openApi() {
@@ -154,7 +153,7 @@ export default {
         "entranceYear": this.entranceYear,
       }).then(() => {
         alert('신규 학생 정보가 등록되었습니다')
-        this.$router.push('/students')
+        this.$router.push('/students/studentsboard')
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
@@ -169,33 +168,6 @@ export default {
     getMajorList() {
       this.$http.get('/json/getMajorList' + this.university + '.json').then((response) => {
         this.majorList = response.data
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    getSido() {
-      this.$http.get('/json/getSido.json').then((response) => {
-        this.sidoList = response.data
-      })
-    },
-    getSigungu() {
-      this.sigunguList = null;
-      this.oopmienList = null;
-      this.$http.get('/json/getSigungu' + this.sido + '.json').then((response) => {
-        if (response.data !== "") {
-          this.sigunguList = response.data
-        } else {
-          this.$http.get('/json/getOopmienBySido' + this.sido + '.json').then((response) => {
-            this.oopmienList = response.data
-          })
-        }
-      }).catch((ex) => {
-        alert("API Error : " + ex)
-      })
-    },
-    getOopmien() {
-      this.$http.get('/json/getOopmienBySigungu' + this.sigungu + '.json').then((response) => {
-        this.oopmienList = response.data
       }).catch((ex) => {
         alert("API Error : " + ex)
       })
